@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/belajarmvc-ci/';
+$config['base_url'] = 'http://localhost/tb2_team3/';
 
 /*
 |--------------------------------------------------------------------------
