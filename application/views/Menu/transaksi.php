@@ -7,38 +7,32 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('message'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newMenuModal">Input Resep</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newMenuModal">Input Transaksi</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <!-- <th scope="col">#</th> -->
-                        <th scope="col">ID Resep</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Total Tagihan</th>
-                        <th scope="col">Status Terima</th>
-                        <th scope="col">ID Pembayaran</th>
-                        <th scope="col">Metode Pembayaran</th>
+                        <th scope="col">ID Transaksi</th>
+                        <th scope="col">ID Produk</th>
+                        <th scope="col">Nama Produk</th>
+                        <th scope="col">Jumlah</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($id_resep as $id) : ?>
+                    <?php foreach ($id_transaksi as $d) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $id['id_resep']; ?></th>
-                            <td><?= $id['tanggal']; ?></td>
-                            <td><?= $id['total_tagihan']; ?></td>
-                            <?php if ($id['status_terima'] == '0') : ?>
-                                <td>Belum</td>
-                            <?php else : ?>
-                                <td>Sudah</td>
-                            <?php endif; ?>
-                            <td><?= $id['id_pembayaran']; ?></td>
-                            <td><?= $id['tipe_bayar']; ?></td>
+                            <th scope="row"><?= $d['id_transaksi']; ?></th>
+                            <td><?= $d['id_produk']; ?></td>
+                            <td><?= $d['nama']; ?></td>
+                            <td><?= $d['qty']; ?></td>
+                            <td><?= $d['tipe']; ?></td>
                             <td>
-                                <a href="<?= base_url('menu/updateListProduct/') . $id['id_resep']; ?>" class="badge badge-success">edit</a>
-                                <a href="<?= base_url('menu/delete/') . $id['id_resep']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('menu/updateListProduct/') . $d['id_produk']; ?>" class="badge badge-success">edit</a>
+                                <a href="<?= base_url('menu/delete/') . $d['id_produk']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

@@ -99,63 +99,6 @@ class Menu extends CI_Controller
         }
     }
 
-    public function statusresep()
-    {
-        $data['title'] = 'Status Resep Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-        $data['subMenu'] = $this->menuModel->getSubMenu();
-        $data['menu'] = $this->menuModel->getMenu();
-
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('menu_id', 'Menu', 'required');
-        $this->form_validation->set_rules('url', 'URL', 'required');
-        $this->form_validation->set_rules('icon', 'Icon', 'required');
-
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/statusresep', $data);
-            $this->load->view('templates/footer');
-        } else {
-            $data = [
-                'title' => $this->input->post('title'),
-                'menu_id' => $this->input->post('menu_id'),
-                'url' => $this->input->post('url'),
-                'icon' => $this->input->post('icon'),
-                'is_active' => $this->input->post('is_active')
-            ];
-            $this->menuModel->insertSubMenu($data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New sub menu added!</div>');
-            redirect('menu/statusresep');
-        }
-    }
-
-    public function listproduk()
-    {
-        $data['title'] = 'List Produk Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-        $data['menu'] = $this->menuModel->getMenu();
-
-        $this->form_validation->set_rules('menu', 'Menu', 'required');
-
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/listproduk', $data);
-            $this->load->view('templates/footer');
-        } else {
-            $data = [
-                'menu' => $this->input->post('menu')
-            ];
-            $this->menuModel->insertMenu($data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
-            redirect('menu/listproduk');
-        }
-    }
 
     public function deleteSubMenu($id)
     {
@@ -197,6 +140,134 @@ class Menu extends CI_Controller
             $this->menuModel->updateSubMenu($dataedited, $id);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Sub menu was updated!</div>');
             redirect('menu/submenu');
+        }
+    }
+
+    // Status Resep Controller
+    public function statusresep()
+    {
+        $data['title'] = 'Status Resep Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['id_resep'] = $this->menuModel->getResep();
+        $data['tanggal'] = $this->menuModel->getResep();
+        $data['total_tagihan'] = $this->menuModel->getResep();
+        $data['status_terima'] = $this->menuModel->getResep();
+        $data['id_pembayaran'] = $this->menuModel->getResep();
+        $data['tipe_bayar'] = $this->menuModel->getResep();
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('menu_id', 'Menu', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('icon', 'Icon', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/statusresep', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'title' => $this->input->post('title'),
+                'menu_id' => $this->input->post('menu_id'),
+                'url' => $this->input->post('url'),
+                'icon' => $this->input->post('icon'),
+                'is_active' => $this->input->post('is_active')
+            ];
+            $this->menuModel->insertSubMenu($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New sub menu added!</div>');
+            redirect('menu/statusresep');
+        }
+    }
+
+    public function transaksi()
+    {
+        $data['title'] = 'Transaksi Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['id_transaksi'] = $this->menuModel->getTransaksi();
+        $data['id_produk'] = $this->menuModel->getTransaksi();
+        $data['nama'] = $this->menuModel->getTransaksi();
+        $data['qty'] = $this->menuModel->getTransaksi();
+        $data['tipe'] = $this->menuModel->getTransaksi();
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('id_produk', 'ID Produk', 'required');
+        $this->form_validation->set_rules('nama', 'Nama Produk', 'required');
+        $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/transaksi', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'nama' => $this->input->post('nama'),
+                'harga_jual' => $this->input->post('harga_jual')
+            ];
+            $this->menuModel->insertMenu($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
+            redirect('menu/listproduk');
+        }
+    }
+
+    public function listproduk()
+    {
+        $data['title'] = 'List Produk Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['id_produk'] = $this->menuModel->getListProduct();
+        $data['nama'] = $this->menuModel->getListProduct();
+        $data['harga_jual'] = $this->menuModel->getListProduct();
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('id_produk', 'ID Produk', 'required');
+        $this->form_validation->set_rules('nama', 'Nama Produk', 'required');
+        $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/listproduk', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'nama' => $this->input->post('nama'),
+                'harga_jual' => $this->input->post('harga_jual')
+            ];
+            $this->menuModel->insertMenu($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
+            redirect('menu/listproduk');
+        }
+    }
+
+    public function updateListProduct($id_produk)
+    {
+        $data['title'] = 'List Produk Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['id_produk'] = $this->menuModel->getListProductByID($id_produk);
+
+        $this->form_validation->set_rules('nama', 'Nama Produk', 'required');
+        $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/editlistproduk', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $dataedited = [
+                'nama' => $this->input->post('nama'),
+                'harga_jual' => $this->input->post('harga_jual')
+            ];
+            $this->menuModel->updateListProduct($id_produk, $dataedited);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk was updated!</div>');
+            redirect('menu/listproduk');
         }
     }
 }
