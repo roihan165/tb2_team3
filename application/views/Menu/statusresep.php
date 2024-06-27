@@ -16,7 +16,6 @@
                         <th scope="col">Tanggal</th>
                         <th scope="col">Total Tagihan</th>
                         <th scope="col">Status Terima</th>
-                        <th scope="col">ID Pembayaran</th>
                         <th scope="col">Metode Pembayaran</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -34,7 +33,6 @@
                             <?php else : ?>
                                 <td>Sudah</td>
                             <?php endif; ?>
-                            <td><?= $id['id_pembayaran']; ?></td>
                             <td><?= $id['tipe_bayar']; ?></td>
                             <td>
                                 <a href="<?= base_url('menu/updateListProduct/') . $id['id_resep']; ?>" class="badge badge-success">edit</a>

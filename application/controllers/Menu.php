@@ -181,36 +181,37 @@ class Menu extends CI_Controller
         }
     }
 
-    public function transaksi()
+    public function produkstok()
     {
-        $data['title'] = 'Transaksi Management';
+        $data['title'] = 'Produk Stok Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['id_transaksi'] = $this->menuModel->getTransaksi();
-        $data['id_produk'] = $this->menuModel->getTransaksi();
-        $data['nama'] = $this->menuModel->getTransaksi();
-        $data['qty'] = $this->menuModel->getTransaksi();
-        $data['tipe'] = $this->menuModel->getTransaksi();
+        $data['id_produk'] = $this->menuModel->getProdukStok();
+        $data['nama'] = $this->menuModel->getProdukStok();
+        $data['qty'] = $this->menuModel->getProdukStok();
+        $data['tipe'] = $this->menuModel->getProdukStok();
+        $data['produk'] = $this->menuModel->getListProduct();
 
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('id_produk', 'ID Produk', 'required');
-        $this->form_validation->set_rules('nama', 'Nama Produk', 'required');
-        $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
+        $this->form_validation->set_rules('produk', 'Produk', 'required');
+        $this->form_validation->set_rules('tipe', 'Tipe', 'required');
+        $this->form_validation->set_rules('qty', 'qty', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/transaksi', $data);
+            $this->load->view('menu/produkstok', $data);
             $this->load->view('templates/footer');
         } else {
             $data = [
-                'nama' => $this->input->post('nama'),
-                'harga_jual' => $this->input->post('harga_jual')
+                'tipe' => $this->input->post('tipe'),
+                'qty' => $this->input->post('qty'),
+                'id_produk' => $this->input->post('produk')
             ];
-            $this->menuModel->insertMenu($data);
+
+            $this->menuModel->insertProductStok($data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
-            redirect('menu/listproduk');
+            redirect('menu/produkstok');
         }
     }
 
@@ -223,10 +224,9 @@ class Menu extends CI_Controller
         $data['nama'] = $this->menuModel->getListProduct();
         $data['harga_jual'] = $this->menuModel->getListProduct();
 
-        $this->form_validation->set_rules('title', 'Title', 'required');
         $this->form_validation->set_rules('id_produk', 'ID Produk', 'required');
-        $this->form_validation->set_rules('nama', 'Nama Produk', 'required');
-        $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
+        $this->form_validation->set_rules('nama_produk', 'Nama Produk', 'required');
+        $this->form_validation->set_rules('harga', 'Harga', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -236,10 +236,11 @@ class Menu extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $data = [
-                'nama' => $this->input->post('nama'),
-                'harga_jual' => $this->input->post('harga_jual')
+                'id_produk' => $this->input->post('id_produk'),
+                'nama' => $this->input->post('nama_produk'),
+                'harga_jual' => $this->input->post('harga')
             ];
-            $this->menuModel->insertMenu($data);
+            $this->menuModel->insertProduct($data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
             redirect('menu/listproduk');
         }

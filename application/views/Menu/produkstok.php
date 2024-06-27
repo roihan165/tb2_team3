@@ -7,28 +7,26 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('message'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newProduk">Input Produk</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newProdukStok">Input Produk Stok</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <!-- <th scope="col">#</th> -->
                         <th scope="col">ID Produk</th>
-                        <th scope="col">Nama Produk</th>
-                        <th scope="col">Harga Jual</th>
+                        <th scope="col">Jumlah Stok</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($nama as $p) : ?>
+                    <?php foreach ($id_produk as $d) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $p['id_produk']; ?></th>
-                            <td><?= $p['nama']; ?></td>
-                            <td><?= $p['harga_jual']; ?></td>
+                            <th scope="row"><?= $d['id_produk']; ?></th>
+                            <td><?= $d['qty']; ?></td>
                             <td>
-                                <a href="<?= base_url('menu/updateListProduct/') . $p['id_produk']; ?>" class="badge badge-success">edit</a>
-                                <a href="<?= base_url('menu/delete/') . $p['id_produk']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('menu/updateListProduct/') . $d['id_produk']; ?>" class="badge badge-success">Detail</a>
+                                <a href="<?= base_url('menu/delete/') . $d['id_produk']; ?>" class="badge badge-danger">Update</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -37,27 +35,36 @@
             </table>
         </div>
     </div>
-
-    <!-- Modal -->
-<div class="modal fade" id="newProduk" tabindex="-1" role="dialog" aria-labelledby="newSubMenuModalLabel" aria-hidden="true">
+</div>
+<!-- Modal -->
+<div class="modal fade" id="newProdukStok" tabindex="-1" role="dialog" aria-labelledby="newSubMenuModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newSubMenuModalLabel">Tambah Produk</h5>
+                <h5 class="modal-title" id="newSubMenuModalLabel">Tambah Produk Stok</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/listproduk'); ?>" method="post">
+            <form action="<?= base_url('menu/produkstok'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="id_produk" name="id_produk" placeholder="id_produk">
+                        <select name="produk" id="produk" class="form-control">
+                            <option value="">Pilih Produk</option>
+                            <?php foreach ($produk as $p) : ?>
+                                <option value="<?= $p['id_produk']; ?>"><?= $p['nama']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" placeholder="nama_produk">
+                        <select name="tipe" id="tipe" class = "form-control">
+                            <option value="">Pilih Tipe</option>
+                            <option value="IN">IN</option>
+                            <option value="OUT">OUT</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="harga" name="harga" placeholder="harga">
+                        <input type="number" class="form-control" id="qty" name="qty" placeholder="qty">
                     </div>
                 </div>
                 <div class="modal-footer">

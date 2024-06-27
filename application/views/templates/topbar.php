@@ -36,5 +36,4 @@
             </ul>
         </nav>
         <!-- End of Topbar -->
-    </div>
-</div>
+   
