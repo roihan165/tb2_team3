@@ -12,7 +12,7 @@
                 <thead>
                     <tr>
                         <!-- <th scope="col">#</th> -->
-                        <th scope="col">ID Produk</th>
+                        <th scope="col">Kode Produk</th>
                         <th scope="col">Nama Produk</th>
                         <th scope="col">Harga Jual</th>
                         <th scope="col">Action</th>
@@ -23,12 +23,12 @@
                     <?php foreach ($nama as $p) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $p['id_produk']; ?></th>
+                            <th scope="row"><?= $p['kode_produk']; ?></th>
                             <td><?= $p['nama']; ?></td>
                             <td><?= $p['harga_jual']; ?></td>
                             <td>
-                                <a href="<?= base_url('menu/updateListProduct/') . $p['id_produk']; ?>" class="badge badge-success">edit</a>
-                                <a href="<?= base_url('menu/delete/') . $p['id_produk']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('listproduk/updateListProduct/') . $p['kode_produk']; ?>" class="badge badge-success">edit</a>
+                                <a href="<?= base_url('listproduk/delete/') . $p['id']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -39,32 +39,32 @@
     </div>
 
     <!-- Modal -->
-<div class="modal fade" id="newProduk" tabindex="-1" role="dialog" aria-labelledby="newSubMenuModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newSubMenuModalLabel">Tambah Produk</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal fade" id="newProduk" tabindex="-1" role="dialog" aria-labelledby="newSubMenuModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newSubMenuModalLabel">Tambah Produk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= base_url('menu/listproduk'); ?>" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="kode_produk" name="kode_produk" placeholder="kode_produk">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="nama_produk" name="nama_produk" placeholder="nama_produk">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" id="harga" name="harga" placeholder="harga">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </div>
+                </form>
             </div>
-            <form action="<?= base_url('menu/listproduk'); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="id_produk" name="id_produk" placeholder="id_produk">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" placeholder="nama_produk">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control" id="harga" name="harga" placeholder="harga">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>

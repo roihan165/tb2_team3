@@ -12,7 +12,7 @@
                 <thead>
                     <tr>
                         <!-- <th scope="col">#</th> -->
-                        <th scope="col">ID Produk</th>
+                        <th scope="col">Kode Produk</th>
                         <th scope="col">Jumlah Stok</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -22,11 +22,11 @@
                     <?php foreach ($id_produk as $d) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $d['id_produk']; ?></th>
+                            <th scope="row"><?= $d['kode_produk']; ?></th>
                             <td><?= $d['qty']; ?></td>
                             <td>
-                                <a href="<?= base_url('menu/updateListProduct/') . $d['id_produk']; ?>" class="badge badge-success">Detail</a>
-                                <a href="<?= base_url('menu/delete/') . $d['id_produk']; ?>" class="badge badge-danger">Update</a>
+                                <a href="<?= base_url('produkstok/detailProdukStok/') . $d['kode_produk']; ?>" class="badge badge-success">Detail</a>
+                                <!-- <a href="<?= base_url('menu/updateProdukStok/' . $d['id'] . '/' . $d['kode_produk']); ?>" class="badge badge-danger">Update</a> -->
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -46,18 +46,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/produkstok'); ?>" method="post">
+            <form action="<?= base_url('produkstok'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <select name="produk" id="produk" class="form-control">
                             <option value="">Pilih Produk</option>
                             <?php foreach ($produk as $p) : ?>
-                                <option value="<?= $p['id_produk']; ?>"><?= $p['nama']; ?></option>
+                                <option value="<?= $p['kode_produk']; ?>"><?= $p['nama']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select name="tipe" id="tipe" class = "form-control">
+                        <select name="tipe" id="tipe" class="form-control">
                             <option value="">Pilih Tipe</option>
                             <option value="IN">IN</option>
                             <option value="OUT">OUT</option>
