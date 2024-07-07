@@ -100,4 +100,34 @@ class Resep extends CI_Controller
         $this->load->view('menu/detailresep', $data);
         $this->load->view('templates/footer');
     }
+
+    public function updateDetailResep($kode_resep, $kode_produk)
+    {
+        $data['title'] = 'Status Resep Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['detail'] = $this->ResepModel->getUpdateDetailResepByID($kode_resep, $kode_produk);
+
+        $this->form_validation->set_rules('tipe_bayar', 'tipe_bayar', 'required');
+        $this->form_validation->set_rules('status_terima', 'status_terima', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/editdetailresep', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $dataedited = [
+                'tipe_bayar' => $this->input->post('tipe_bayar')
+            ];
+
+            $dataedited1 = [
+                'status_terima' => $this->input->post('status_terima')
+            ];
+            $this->PembayaranModel->updatePembayaran($kode_resep, $dataedited);
+            $this->ResepModel->updateDetailResep($kode_resep, $dataedited1);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Detail Resep was updated!</div>');
+            redirect('resep');
+        }
+    }
 }

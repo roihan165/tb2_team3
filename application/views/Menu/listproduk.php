@@ -28,7 +28,7 @@
                             <td><?= $p['harga_jual']; ?></td>
                             <td>
                                 <a href="<?= base_url('listproduk/updateListProduct/') . $p['kode_produk']; ?>" class="badge badge-success">edit</a>
-                                <a href="<?= base_url('listproduk/delete/') . $p['id']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('listproduk/delete/') . $p['kode_produk']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -48,7 +48,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('menu/listproduk'); ?>" method="post">
+                <form action="<?= base_url('listproduk'); ?>" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" class="form-control" id="kode_produk" name="kode_produk" placeholder="kode_produk">

@@ -11,7 +11,8 @@ class Resep_Model extends CI_Model
 					  JOIN `resep` ON `produk_stok`.`kode_resep` = `resep`.`kode_resep`
 	                  JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
                       WHERE `produk_stok`.`tipe` = 'OUT'
-                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`,`detail_resep`.`kode_produk`,`produk_stok`.`id`;";
+                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`,`detail_resep`.`kode_produk`,`produk_stok`.`id`
+                      ORDER BY `resep`.`kode_resep` ASC;";
         return $this->db->query($query)->result_array();
     }
 
@@ -35,7 +36,7 @@ class Resep_Model extends CI_Model
 
     public function getDetailResepByID($kode_resep, $kode_produk)
     {
-        $query = "SELECT `resep`.`kode_resep`,`resep`.`tanggal`,`produk`.`nama`, `produk_stok`.`qty`, `resep`.`total_tagihan`, `pembayaran`.`tipe_bayar`, `resep`.`status_terima`
+        $query = "SELECT `resep`.`kode_resep`,`resep`.`tanggal`,`produk`.`kode_produk`,`produk`.`nama`, `produk_stok`.`qty`, `resep`.`total_tagihan`, `pembayaran`.`tipe_bayar`, `resep`.`status_terima`
                     FROM `pembayaran` 
                     JOIN `resep` ON `pembayaran`.`kode_resep` = `resep`.`kode_resep`
                     JOIN `produk_stok` ON `resep`.`kode_resep` = `produk_stok`.`kode_resep`
@@ -43,6 +44,24 @@ class Resep_Model extends CI_Model
                     JOIN `produk` ON `detail_resep`.`kode_produk` = `produk`.`kode_produk`
                     WHERE `resep`.`kode_resep` = '$kode_resep' AND `produk_stok`.`kode_produk` = '$kode_produk' AND `produk_stok`.`tipe` = 'OUT' AND `produk_stok`.`kode_resep` = '$kode_resep';";
         return $this->db->query($query)->result_array();
+    }
+
+    public function getUpdateDetailResepByID($kode_resep, $kode_produk)
+    {
+        $query = "SELECT `resep`.`kode_resep`,`resep`.`tanggal`,`produk`.`kode_produk`,`produk`.`nama`, `produk_stok`.`qty`, `resep`.`total_tagihan`, `pembayaran`.`tipe_bayar`, `resep`.`status_terima`
+                    FROM `pembayaran` 
+                    JOIN `resep` ON `pembayaran`.`kode_resep` = `resep`.`kode_resep`
+                    JOIN `produk_stok` ON `resep`.`kode_resep` = `produk_stok`.`kode_resep`
+                    JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
+                    JOIN `produk` ON `detail_resep`.`kode_produk` = `produk`.`kode_produk`
+                    WHERE `resep`.`kode_resep` = '$kode_resep' AND `produk_stok`.`kode_produk` = '$kode_produk' AND `produk_stok`.`tipe` = 'OUT' AND `produk_stok`.`kode_resep` = '$kode_resep';";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function updateDetailResep($kode_resep, $dataedited)
+    {
+        $this->db->update('resep', $dataedited, ['kode_resep' => $kode_resep]);
+        return $this->db->affected_rows();
     }
 
     public function insertDetailResep($data)

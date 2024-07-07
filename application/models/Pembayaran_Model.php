@@ -14,6 +14,12 @@ class Pembayaran_Model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    public function updatePembayaran($kode_resep, $dataedited)
+    {
+        $this->db->update('pembayaran', $dataedited, ['kode_resep' => $kode_resep]);
+        return $this->db->affected_rows();
+    }
+
     public function deletePembayaran($id)
     {
         $this->db->delete('pembayaran', ['kode_resep' => $id]);

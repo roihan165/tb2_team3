@@ -32,4 +32,10 @@ ON `produk`.`kode_produk` = `produk_stok`.`kode_produk` GROUP BY `produk_stok`.`
         $query = "DELETE FROM produk_stok WHERE kode_produk = '$kode_produk' AND tipe = 'OUT' AND id = $id;";
         return $this->db->affected_rows();
     }
+
+    public function delete($kode_produk)
+    {
+        $this->db->delete('produk_stok', ['kode_produk' => $kode_produk]);
+        return $this->db->affected_rows();
+    }
 }

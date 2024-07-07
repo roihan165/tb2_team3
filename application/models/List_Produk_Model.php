@@ -11,7 +11,7 @@ class List_Produk_Model extends CI_Model
 
     public function getListProductByID($id_produk)
     {
-        return $this->db->get_where('produk', ['id' => $id_produk])->row_array();
+        return $this->db->get_where('produk', ['kode_produk' => $id_produk])->row_array();
     }
 
     public function updateListProduct($id, $dataedited)
@@ -28,7 +28,7 @@ class List_Produk_Model extends CI_Model
 
     public function deleteProduk($id)
     {
-        $this->db->delete('produk', ['id' => $id]);
+        $this->db->delete('produk', ['kode_produk' => $id]);
         return $this->db->affected_rows();
     }
 }

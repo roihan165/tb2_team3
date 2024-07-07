@@ -8,6 +8,7 @@ class ListProduk extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('List_Produk_Model', 'ListProdukModel');
+        $this->load->model('Produk_Stok_Model', 'ProdukStokModel');
         $this->load->helper('date');
     }
 
@@ -39,7 +40,7 @@ class ListProduk extends CI_Controller
             ];
             $this->ListProdukModel->insertProduct($data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk Telah Ditambahkan!</div>');
-            redirect('menu/listproduk');
+            redirect('listproduk');
         }
     }
 
@@ -67,14 +68,15 @@ class ListProduk extends CI_Controller
             ];
             $this->ListProdukModel->updateListProduct($id_produk, $dataedited);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk was updated!</div>');
-            redirect('menu/listproduk');
+            redirect('listproduk');
         }
     }
 
     public function delete($id)
     {
         $this->ListProdukModel->deleteProduk($id);
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Menu was deleted!</div>');
+        $this->ProdukStokModel->delete($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Produk was deleted!</div>');
         redirect('listproduk');
     }
 }

@@ -4,7 +4,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-code"></i>
+            <i class="fas fa-prescription-bottle-alt"></i>
         </div>
         <div class="sidebar-brand-text mx-3">Apotek Mitra Medika</div>
     </a>
@@ -44,13 +44,13 @@
         <?php foreach ($subMenu as $sm) : ?>
             <?php if ($title == $sm['title']) : ?>
                 <li class="nav-item active">
-            <?php else : ?>
+                <?php else : ?>
                 <li class="nav-item">
-            <?php endif; ?>
-            <a class="nav-link pb-0" href="<?= base_url($sm['url']); ?>">
-                <i class="<?= $sm['icon']; ?>"></i>
-                <span><?= $sm['title']; ?></span>
-            </a>
+                <?php endif; ?>
+                <a class="nav-link pb-0" href="<?= base_url($sm['url']); ?>">
+                    <i class="<?= $sm['icon']; ?>"></i>
+                    <span><?= $sm['title']; ?></span>
+                </a>
             </li>
         <?php endforeach; ?>
 

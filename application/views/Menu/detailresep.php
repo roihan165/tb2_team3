@@ -37,6 +37,7 @@
                             <?php else : ?>
                                 <td>Sudah</td>
                             <?php endif; ?>
+                            <td><a href="<?= base_url('resep/updateDetailResep/') . $d['kode_resep'] . '/' . $d['kode_produk']; ?>" class="badge badge-success">Update</a></td>
                         </tr>
                         <?php $i++; ?>
                     <?php endforeach; ?>
