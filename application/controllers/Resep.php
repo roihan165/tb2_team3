@@ -76,6 +76,27 @@ class Resep extends CI_Controller
         }
     }
 
+    public function search()
+    {
+        $keyword = $this->input->get('keyword');
+        if ($keyword == 'Sudah' || $keyword == 'sudah') {
+            $keyword = '1';
+        } elseif ($keyword == 'Belum' || $keyword == 'belum') {
+            $keyword = '0';
+        }
+
+        $data['reseps'] = $this->ResepModel->search_reseps($keyword);
+        $data['title'] = 'Status Resep Management';
+
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/statusresepsearch', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function deleteResep($id, $kode_produk)
     {
         $this->PembayaranModel->deletePembayaran($id);

@@ -16,6 +16,18 @@ class Resep_Model extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
+    public function search_reseps($keyword)
+    {
+        $query = "SELECT `resep`.`id_resep`, `resep`.`kode_resep`, `resep`.`total_tagihan`, `resep`.`status_terima`, `detail_resep`.`kode_produk`, `produk_stok`.`id`
+	                  FROM `produk_stok`
+					  JOIN `resep` ON `produk_stok`.`kode_resep` = `resep`.`kode_resep`
+	                  JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
+                      WHERE `produk_stok`.`tipe` = 'OUT' AND `resep`.`kode_resep` = '$keyword' OR `resep`.`status_terima` = '$keyword' 
+                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`,`detail_resep`.`kode_produk`,`produk_stok`.`id`
+                      ORDER BY `resep`.`kode_resep` ASC;";
+        return $this->db->query($query)->result_array();
+    }
+
     public function insertResep($data)
     {
         $this->db->insert('resep', $data);

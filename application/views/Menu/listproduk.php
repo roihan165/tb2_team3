@@ -10,7 +10,7 @@
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newProduk">Input Produk</a>
             <form action="<?= base_url('listproduk/search'); ?>" method="get">
                 <input type="text" name="keyword" placeholder="Search..." required>
-                <button type="submit">Search</button>
+                <button type="submit" class="fas fa-search btn-primary mb-3"></button>
             </form>
             <table class="table table-hover">
                 <thead>

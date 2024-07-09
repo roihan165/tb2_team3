@@ -7,11 +7,7 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('message'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newResep">Input Resep</a>
-            <form action="<?= base_url('resep/search'); ?>" method="get">
-                <input type="text" name="keyword" placeholder="Search..." required>
-                <button type="submit" class="fas fa-search btn-primary mb-3"></button>
-            </form>
+            <a href="<?= base_url('resep') ?>" class="btn btn-primary mb-3">Kembali</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -25,20 +21,20 @@
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($id_resep as $id) : ?>
+                    <?php foreach ($reseps as $r) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $id['id_resep']; ?></th>
-                            <td><?= $id['kode_resep']; ?></td>
-                            <td><?= $id['total_tagihan']; ?></td>
-                            <?php if ($id['status_terima'] == '0') : ?>
+                            <th scope="row"><?= $r['id_resep']; ?></th>
+                            <td><?= $r['kode_resep']; ?></td>
+                            <td><?= $r['total_tagihan']; ?></td>
+                            <?php if ($r['status_terima'] == '0') : ?>
                                 <td>Belum</td>
                             <?php else : ?>
                                 <td>Sudah</td>
                             <?php endif; ?>
                             <td>
-                                <a href="<?= base_url('resep/detailResep/') . $id['kode_resep'] . '/' . $id['kode_produk'] . '/' . $id['id']; ?>" class="badge badge-success">Detail</a>
-                                <a href="<?= base_url('resep/deleteResep/') . $id['kode_resep'] . '/' . $id['id']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('resep/detailResep/') . $r['kode_resep'] . '/' . $r['kode_produk'] . '/' . $r['id']; ?>" class="badge badge-success">Detail</a>
+                                <a href="<?= base_url('resep/deleteResep/') . $r['kode_resep'] . '/' . $r['id']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
