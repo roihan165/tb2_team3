@@ -7,11 +7,7 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('message'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newProduk">Input Produk</a>
-            <form action="<?= base_url('listproduk/search'); ?>" method="get">
-                <input type="text" name="keyword" placeholder="Search..." required>
-                <button type="submit">Search</button>
-            </form>
+            <a href="<?= base_url('listproduk') ?>" class="btn btn-primary mb-3">Kembali</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -24,7 +20,7 @@
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($nama as $p) : ?>
+                    <?php foreach ($products as $p) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
                             <th scope="row"><?= $p['kode_produk']; ?></th>

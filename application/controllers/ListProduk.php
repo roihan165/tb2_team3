@@ -44,6 +44,21 @@ class ListProduk extends CI_Controller
         }
     }
 
+    public function search()
+    {
+        $keyword = $this->input->get('keyword');
+        $data['products'] = $this->ListProdukModel->search_products($keyword);
+        $data['title'] = 'List Produk Management';
+
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/listproduksearch', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function updateListProduct($id_produk)
     {
         $data['title'] = 'List Produk Management';
