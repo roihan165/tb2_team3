@@ -16,7 +16,8 @@
                         <th scope="col">Tanggal</th>
                         <th scope="col">Nama Produk</th>
                         <th scope="col">qty</th>
-                        <th scope="col">Total Tagihan</th>
+                        <th scope="col">Harga Jual</th>
+                        <th scope="col">Jumlah Per Produk</th>
                         <th scope="col">Metode Pembayaran</th>
                         <th scope="col">Status Terima</th>
                     </tr>
@@ -30,7 +31,8 @@
                             <td><?= $d['tanggal']; ?></td>
                             <td><?= $d['nama']; ?></td>
                             <td><?= $d['qty']; ?></td>
-                            <td><?= $d['total_tagihan']; ?></td>
+                            <td><?= $d['harga_jual']; ?></td>
+                            <td><?= $d['jumlah_per_produk']; ?></td>
                             <td><?= $d['tipe_bayar']; ?></td>
                             <?php if ($d['status_terima'] == '0') : ?>
                                 <td>Belum</td>

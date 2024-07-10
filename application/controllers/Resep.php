@@ -26,10 +26,10 @@ class Resep extends CI_Controller
         $data['produk_stok'] = $this->ProdukStokModel->getProdukStok();
         $data['pembayaran'] = $this->PembayaranModel->getPembayaran();
 
-        $this->form_validation->set_rules('kode_resep', 'kode_resep', 'required');
-        $this->form_validation->set_rules('produk', 'produk', 'required');
-        $this->form_validation->set_rules('qty', 'qty', 'required');
-        $this->form_validation->set_rules('tipe_bayar', 'tipe_bayar', 'required');
+        $this->form_validation->set_rules('kode_resep', 'Kode Resep', 'required');
+        $this->form_validation->set_rules('produk[]', 'Produk', 'required');
+        $this->form_validation->set_rules('qty[]', 'Quantity', 'required|numeric');
+        $this->form_validation->set_rules('tipe_bayar', 'Tipe Bayar', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -38,39 +38,71 @@ class Resep extends CI_Controller
             $this->load->view('menu/statusresep', $data);
             $this->load->view('templates/footer');
         } else {
-            $qty1 = $this->input->post('qty');
-            $kode_produk = $this->input->post('produk');
-            $produk = $this->ListProdukModel->getListProductByID($kode_produk);
-            $harga_jual = $produk['harga_jual'];
 
-            $total_tagihan =  $qty1 * $harga_jual;
-            $data = [
-                'kode_resep' => $this->input->post('kode_resep'),
+            // Get single value for kode_resep
+            $kodeResep = $this->input->post('kode_resep');
+
+            // Prepare data for resep (assuming only one entry)
+            $dataResep = [
+                'kode_resep' => $kodeResep,
                 'tanggal' => date('Y-m-d'),
-                'total_tagihan' => $total_tagihan,
+                'total_tagihan' => 0, // Initialize total_tagihan
                 'status_terima' => '0'
             ];
-            $datadetail = [
-                'kode_produk' => $this->input->post('produk'),
-                'kode_resep' => $this->input->post('kode_resep')
-            ];
+
+            // Arrays for multiple product entries
+            $dataDetail = [];
+            $dataProdukStok = [];
+
+            // Loop through each product and quantity pair
+            $totalTagihan = 0; // Initialize total tagihan for resep
+
+            $produkKode = $this->input->post('produk');
             $qty = $this->input->post('qty');
-            $negative_qty = -$qty;
-            $dataprodukstok = [
-                'kode_produk' => $this->input->post('produk'),
-                'tipe' => 'OUT',
-                'qty' => $negative_qty,
-                'kode_resep' => $this->input->post('kode_resep')
-            ];
-            $datapembayaran = [
-                'kode_resep' => $this->input->post('kode_resep'),
+
+            foreach ($produkKode as $key => $kodeProduk) {
+                // Fetch product details for current product
+                $produk = $this->ListProdukModel->getListProductByID($kodeProduk);
+                $hargaJual = $produk['harga_jual'];
+
+                // Calculate total tagihan for current product
+                $subtotal = $qty[$key] * $hargaJual;
+                $totalTagihan += $subtotal;
+
+                // Prepare data for insertion
+                $dataDetail[] = [
+                    'kode_produk' => $kodeProduk,
+                    'kode_resep' => $kodeResep
+                ];
+
+                // Handle negative quantity for stock adjustment
+                $negativeQty = -$qty[$key];
+                $dataProdukStok[] = [
+                    'kode_produk' => $kodeProduk,
+                    'tipe' => 'OUT',
+                    'qty' => $negativeQty,
+                    'kode_resep' => $kodeResep
+                ];
+            }
+
+            // Update total_tagihan in dataResep
+            $dataResep['total_tagihan'] = $totalTagihan;
+
+            // Prepare data for pembayaran (assuming single payment method for entire resep)
+            $dataPembayaran = [
+                'kode_resep' => $kodeResep,
                 'tipe_bayar' => $this->input->post('tipe_bayar')
             ];
 
-            $this->ResepModel->insertResep($data);
-            $this->PembayaranModel->insertPembayaran($datapembayaran);
-            $this->ResepModel->insertDetailResep($datadetail);
-            $this->ProdukStokModel->insertProductStok($dataprodukstok);
+            // Insert data using models
+            $this->ResepModel->insertResep($dataResep);
+            $this->PembayaranModel->insertPembayaran($dataPembayaran);
+            foreach ($dataDetail as $index => $detail) {
+                $this->ResepModel->insertDetailResep($detail);
+                $this->ProdukStokModel->insertProductStok($dataProdukStok[$index]);
+            }
+
+            // Set flash message and redirect
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Input Resep Berhasil!</div>');
             redirect('resep');
         }
@@ -97,23 +129,23 @@ class Resep extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function deleteResep($id, $kode_produk)
+    public function deleteResep($id)
     {
         $this->PembayaranModel->deletePembayaran($id);
         $this->ResepModel->deleteResep($id);
         $this->ResepModel->deleteDetailResep($id);
-        $this->ProdukStokModel->deleteProdukStok($kode_produk, $id);
+        $this->ProdukStokModel->deleteProdukStok($id);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Resep was deleted!</div>');
         redirect('resep');
     }
 
     // Detail Resep Controller
-    public function detailResep($kode_resep, $kode_produk, $id)
+    public function detailResep($kode_resep)
     {
         $data['title'] = 'Status Resep Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['id']  = $this->ResepModel->getDetailResepByID($kode_resep, $kode_produk, $id);
+        $data['id']  = $this->ResepModel->getDetailResepByID($kode_resep);
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

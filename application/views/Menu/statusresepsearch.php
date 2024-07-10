@@ -33,8 +33,8 @@
                                 <td>Sudah</td>
                             <?php endif; ?>
                             <td>
-                                <a href="<?= base_url('resep/detailResep/') . $r['kode_resep'] . '/' . $r['kode_produk'] . '/' . $r['id']; ?>" class="badge badge-success">Detail</a>
-                                <a href="<?= base_url('resep/deleteResep/') . $r['kode_resep'] . '/' . $r['id']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('resep/detailResep/') . $r['kode_resep']; ?>" class="badge badge-success">Detail</a>
+                                <a href="<?= base_url('resep/deleteResep/') . $r['kode_resep']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

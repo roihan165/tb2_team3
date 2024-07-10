@@ -6,24 +6,24 @@ class Resep_Model extends CI_Model
     // Model Tabel Resep
     public function getResep()
     {
-        $query = "SELECT `resep`.`id_resep`, `resep`.`kode_resep`, `resep`.`total_tagihan`, `resep`.`status_terima`, `detail_resep`.`kode_produk`, `produk_stok`.`id`
+        $query = "SELECT `resep`.`id_resep`, `resep`.`kode_resep`, `resep`.`total_tagihan`, `resep`.`status_terima`
 	                  FROM `produk_stok`
 					  JOIN `resep` ON `produk_stok`.`kode_resep` = `resep`.`kode_resep`
 	                  JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
                       WHERE `produk_stok`.`tipe` = 'OUT'
-                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`,`detail_resep`.`kode_produk`,`produk_stok`.`id`
+                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`
                       ORDER BY `resep`.`kode_resep` ASC;";
         return $this->db->query($query)->result_array();
     }
 
     public function search_reseps($keyword)
     {
-        $query = "SELECT `resep`.`id_resep`, `resep`.`kode_resep`, `resep`.`total_tagihan`, `resep`.`status_terima`, `detail_resep`.`kode_produk`, `produk_stok`.`id`
+        $query = "SELECT `resep`.`id_resep`, `resep`.`kode_resep`, `resep`.`total_tagihan`, `resep`.`status_terima`
 	                  FROM `produk_stok`
 					  JOIN `resep` ON `produk_stok`.`kode_resep` = `resep`.`kode_resep`
 	                  JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
-                      WHERE `produk_stok`.`tipe` = 'OUT' AND `resep`.`kode_resep` = '$keyword' OR `resep`.`status_terima` = '$keyword' 
-                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`,`detail_resep`.`kode_produk`,`produk_stok`.`id`
+                      WHERE `produk_stok`.`tipe` = 'OUT' AND `resep`.`kode_resep` = '$keyword' OR `resep`.`status_terima` = '$keyword'
+                      GROUP BY `resep`.`id_resep`,`resep`.`kode_resep`
                       ORDER BY `resep`.`kode_resep` ASC;";
         return $this->db->query($query)->result_array();
     }
@@ -46,15 +46,16 @@ class Resep_Model extends CI_Model
         return $this->db->get('detail_resep')->result_array();
     }
 
-    public function getDetailResepByID($kode_resep, $kode_produk)
+    public function getDetailResepByID($kode_resep)
     {
-        $query = "SELECT `resep`.`kode_resep`,`resep`.`tanggal`,`produk`.`kode_produk`,`produk`.`nama`, `produk_stok`.`qty`, `resep`.`total_tagihan`, `pembayaran`.`tipe_bayar`, `resep`.`status_terima`
-                    FROM `pembayaran` 
-                    JOIN `resep` ON `pembayaran`.`kode_resep` = `resep`.`kode_resep`
-                    JOIN `produk_stok` ON `resep`.`kode_resep` = `produk_stok`.`kode_resep`
-                    JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
-                    JOIN `produk` ON `detail_resep`.`kode_produk` = `produk`.`kode_produk`
-                    WHERE `resep`.`kode_resep` = '$kode_resep' AND `produk_stok`.`kode_produk` = '$kode_produk' AND `produk_stok`.`tipe` = 'OUT' AND `produk_stok`.`kode_resep` = '$kode_resep';";
+        $query = "SELECT `resep`.`kode_resep` , `resep`.`tanggal`,`produk`.`nama`,`produk_stok`.`qty`, `produk`.`harga_jual`, ABS(`produk_stok`.`qty`) * `produk`.`harga_jual` AS `jumlah_per_produk` , `pembayaran`.`tipe_bayar`,`resep`.`status_terima`, `produk`.`kode_produk`
+                  FROM `pembayaran`
+                  join `resep` ON `pembayaran`.`kode_resep` = `resep`.`kode_resep`
+                  JOIN `detail_resep` ON `resep`.`kode_resep` = `detail_resep`.`kode_resep`
+                  JOIN `produk` ON `detail_resep`.`kode_produk` = `produk`.`kode_produk`
+                  JOIN `produk_stok` ON `produk`.`kode_produk` = `produk_stok`.`kode_produk`
+                  WHERE `resep`.`kode_resep` = '$kode_resep' AND `produk_stok`.`tipe` = 'OUT' AND `produk_stok`.`kode_resep` = '$kode_resep'
+                  GROUP BY `detail_resep`.`kode_resep`, `resep`.`tanggal`,`produk`.`nama`, `produk_stok`.`qty`, `produk`.`harga_jual`,`pembayaran`.`tipe_bayar`,`resep`.`status_terima`,`produk`.`kode_produk`;";
         return $this->db->query($query)->result_array();
     }
 

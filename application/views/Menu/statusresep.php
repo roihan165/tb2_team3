@@ -16,7 +16,7 @@
                 <thead>
                     <tr>
                         <!-- <th scope="col">#</th> -->
-                        <th scope="col">ID Resep</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Kode Resep</th>
                         <th scope="col">Total Tagihan</th>
                         <th scope="col">Status Terima</th>
@@ -28,7 +28,7 @@
                     <?php foreach ($id_resep as $id) : ?>
                         <tr>
                             <!-- <th scope="row"><?= $i; ?></th> -->
-                            <th scope="row"><?= $id['id_resep']; ?></th>
+                            <th scope="row"><?= $i; ?></th>
                             <td><?= $id['kode_resep']; ?></td>
                             <td><?= $id['total_tagihan']; ?></td>
                             <?php if ($id['status_terima'] == '0') : ?>
@@ -37,8 +37,8 @@
                                 <td>Sudah</td>
                             <?php endif; ?>
                             <td>
-                                <a href="<?= base_url('resep/detailResep/') . $id['kode_resep'] . '/' . $id['kode_produk'] . '/' . $id['id']; ?>" class="badge badge-success">Detail</a>
-                                <a href="<?= base_url('resep/deleteResep/') . $id['kode_resep'] . '/' . $id['id']; ?>" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('resep/detailResep/') . $id['kode_resep']; ?>" class="badge badge-success">Detail</a>
+                                <a href="<?= base_url('resep/deleteResep/') . $id['kode_resep']; ?>" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -63,16 +63,28 @@
                         <div class="form-group">
                             <input type="text" class="form-control" id="kode_resep" name="kode_resep" placeholder="Kode Resep">
                         </div>
-                        <div class="form-group">
-                            <select name="produk" id="produk" class="form-control">
-                                <option value="">Pilih Produk</option>
-                                <?php foreach ($produk as $p) : ?>
-                                    <option value="<?= $p['kode_produk']; ?>"><?= $p['nama']; ?> : <?= $p['harga_jual'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div id="productInputs">
+                            <div class="form-row">
+                                <div class="form-group col-md-7">
+                                    <select name="produk[]" id="produk" class="form-control">
+                                        <option value="">Pilih Produk</option>
+                                        <?php foreach ($produk_stok as $p) : ?>
+                                            <option value="<?= $p['kode_produk']; ?>"><?= $p['nama']; ?> : <?= $p['harga_jual']; ?> -> <?= $p['qty'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <input type="number" class="form-control" id="qty" name="qty[]" placeholder="Jumlah">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" id="qty" name="qty" placeholder="Jumlah yang diBeli">
+                        <div class="form-row">
+                            <div class="form-group col-md-1">
+                                <button type="button" class="btn btn-success" id="addProduct">+</button>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <button type="button" class="btn btn-danger" id="removeProduct">-</button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <select name="tipe_bayar" id="tipe_bayar" class="form-control">
@@ -90,3 +102,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('addProduct').addEventListener('click', function() {
+            const productInputs = document.getElementById('productInputs');
+            const newInputRow = document.createElement('div');
+            newInputRow.classList.add('form-row');
+            newInputRow.innerHTML = `
+            <div class="form-group col-md-7">
+                <select name="produk[]" class="form-control">
+                    <option value="">Pilih Produk</option>
+                    <?php foreach ($produk_stok as $p) : ?>
+                        <option value="<?= $p['kode_produk']; ?>"><?= $p['nama']; ?> : <?= $p['harga_jual'] ?> -> <?= $p['qty'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group col-md-5">
+                <input type="number" class="form-control" name="qty[]" placeholder="Jumlah">
+            </div>
+        `;
+            productInputs.appendChild(newInputRow);
+        });
+
+        document.getElementById('removeProduct').addEventListener('click', function() {
+            const productInputs = document.getElementById('productInputs');
+            if (productInputs.children.length > 1) {
+                productInputs.removeChild(productInputs.lastChild);
+            }
+        });
+    </script>
